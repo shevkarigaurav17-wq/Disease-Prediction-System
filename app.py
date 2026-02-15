@@ -4,7 +4,7 @@ import joblib
 import matplotlib.pyplot as plt
 import os
 
-Page setup
+
 
 st.set_page_config(page_title="AI Disease Prediction", page_icon="🏥")
 
@@ -15,13 +15,11 @@ Get current directory safely (works on Streamlit Cloud)
 
 BASE_DIR = os.path.dirname(os.path.abspath(file))
 
-File paths
 
 model_path = os.path.join(BASE_DIR, "model.pkl")
 scaler_path = os.path.join(BASE_DIR, "scaler.pkl")
 accuracy_path = os.path.join(BASE_DIR, "accuracy.pkl")
 
-Load files safely
 
 try:
 model = joblib.load(model_path)
@@ -32,7 +30,6 @@ st.error("❌ Model files not found or incompatible.")
 st.error("Make sure model.pkl, scaler.pkl, accuracy.pkl are in the same folder as app.py")
 st.stop()
 
-Show model accuracy
 
 st.info(f"Model Accuracy: {accuracy*100:.2f}%")
 
@@ -47,7 +44,6 @@ bmi = st.number_input("BMI", 0.0, 70.0, 25.0)
 dpf = st.number_input("Diabetes Pedigree Function", 0.0, 3.0, 0.5)
 age = st.number_input("Age", 1, 100, 30)
 
-Prediction
 
 if st.button("Predict Disease Risk"):
 
@@ -69,7 +65,6 @@ else:
     st.success(f"🟢 Low Risk ({(1-probability)*100:.2f}%)")
     st.write("✅ Maintain healthy lifestyle.")
 
-# Chart
 fig, ax = plt.subplots()
 ax.bar(["Risk %"], [probability*100])
 ax.set_ylabel("Percentage")
@@ -78,3 +73,4 @@ st.pyplot(fig)
 
 st.write("---")
 st.caption("This project is for educational purposes only and not a medical diagnosis tool.")
+
