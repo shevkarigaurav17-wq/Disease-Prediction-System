@@ -21,7 +21,8 @@ accuracy_path = os.path.join(BASE_DIR, "accuracy.pkl")
 
 
 try:
-model = joblib.load(model_path)
+    model = joblib.load(model_path)
+
 scaler = joblib.load(scaler_path)
 accuracy = joblib.load(accuracy_path)
 except Exception as e:
@@ -72,5 +73,6 @@ st.pyplot(fig)
 
 st.write("---")
 st.caption("This project is for educational purposes only and not a medical diagnosis tool.")
+
 
 
