@@ -27,21 +27,21 @@ dpf = st.number_input("Diabetes Pedigree Function", 0.0, 3.0, 0.5)
 age = st.number_input("Age", 1, 100, 30)
 
 if st.button("Predict Disease Risk"):
-input_data = np.array([[preg, glucose, bp, skin, insulin, bmi, dpf, age]])
-input_scaled = scaler.transform(input_data)
 
-prediction = model.predict(input_scaled)[0]
-probability = model.predict_proba(input_scaled)[0][1]
+    input_data = np.array([[preg, glucose, bp, skin, insulin, bmi, dpf, age]])
+    input_scaled = scaler.transform(input_data)
 
-st.subheader("Prediction Result")
+    prediction = model.predict(input_scaled)[0]
+    probability = model.predict_proba(input_scaled)[0][1]
 
-if probability > 0.7:
-    st.error(f"🔴 High Risk of Diabetes ({probability*100:.2f}%)")
-    st.write("⚠️ Recommended: Consult doctor, improve diet, increase physical activity.")
-elif probability > 0.4:
-    st.warning(f"🟠 Moderate Risk ({probability*100:.2f}%)")
-    st.write("⚠️ Recommended: Regular checkups, lifestyle monitoring.")
-else:
-    st.success(f"🟢 Low Risk ({(1-probability)*100:.2f}%)")
-    st.wr
+    st.subheader("Prediction Result")
+
+    if probability > 0.7:
+        st.error(f"🔴 High Risk of Diabetes ({probability*100:.2f}%)")
+    elif probability > 0.4:
+        st.warning(f"🟠 Moderate Risk ({probability*100:.2f}%)")
+    else:
+        st.success(f"🟢 Low Risk ({(1-probability)*100:.2f}%)")
+
+
 
