@@ -11,7 +11,6 @@ st.set_page_config(page_title="AI Disease Prediction", page_icon="🏥")
 st.title("🏥 AI-Based Disease Prediction System")
 st.write("Enter patient health details to predict diabetes risk")
 
-Get current directory safely (works on Streamlit Cloud)
 
 BASE_DIR = os.path.dirname(os.path.abspath(file))
 
@@ -73,4 +72,5 @@ st.pyplot(fig)
 
 st.write("---")
 st.caption("This project is for educational purposes only and not a medical diagnosis tool.")
+
 
