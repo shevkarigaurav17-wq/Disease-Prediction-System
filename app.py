@@ -2,38 +2,18 @@ import streamlit as st
 import numpy as np
 import joblib
 import matplotlib.pyplot as plt
-import os
-
-
 
 st.set_page_config(page_title="AI Disease Prediction", page_icon="🏥")
 
 st.title("🏥 AI-Based Disease Prediction System")
 st.write("Enter patient health details to predict diabetes risk")
 
-
-BASE_DIR = os.path.dirname(os.path.abspath(file))
-
-
-model_path = os.path.join(BASE_DIR, "model.pkl")
-scaler_path = os.path.join(BASE_DIR, "scaler.pkl")
-accuracy_path = os.path.join(BASE_DIR, "accuracy.pkl")
-
-
-try:
-    model = joblib.load(model_path)
-
-scaler = joblib.load(scaler_path)
-accuracy = joblib.load(accuracy_path)
-except Exception as e:
-st.error("❌ Model files not found or incompatible.")
-st.error("Make sure model.pkl, scaler.pkl, accuracy.pkl are in the same folder as app.py")
-st.stop()
-
+# Load model files (must be in same folder as app.py)
+model = joblib.load("model.pkl")
+scaler = joblib.load("scaler.pkl")
+accuracy = joblib.load("accuracy.pkl")
 
 st.info(f"Model Accuracy: {accuracy*100:.2f}%")
-
-User inputs
 
 preg = st.number_input("Pregnancies", 0, 20, 1)
 glucose = st.number_input("Glucose", 0, 200, 120)
@@ -44,35 +24,22 @@ bmi = st.number_input("BMI", 0.0, 70.0, 25.0)
 dpf = st.number_input("Diabetes Pedigree Function", 0.0, 3.0, 0.5)
 age = st.number_input("Age", 1, 100, 30)
 
-
 if st.button("Predict Disease Risk"):
+    data = np.array([[preg, glucose, bp, skin, insulin, bmi, dpf, age]])
+    data = scaler.transform(data)
+    prob = model.predict_proba(data)[0][1]
 
-input_data = np.array([[preg, glucose, bp, skin, insulin, bmi, dpf, age]])
-input_scaled = scaler.transform(input_data)
+    st.subheader("Prediction Result")
 
-prediction = model.predict(input_scaled)[0]
-probability = model.predict_proba(input_scaled)[0][1]
+    if prob > 0.7:
+        st.error(f"High Risk of Diabetes ({prob*100:.2f}%)")
+    elif prob > 0.4:
+        st.warning(f"Moderate Risk ({prob*100:.2f}%)")
+    else:
+        st.success(f"Low Risk ({(1-prob)*100:.2f}%)")
 
-st.subheader("Prediction Result")
+    fig, ax = plt.subplots()
+    ax.bar(["Risk %"], [prob*100])
+    st.pyplot(fig)
 
-if probability > 0.7:
-    st.error(f"🔴 High Risk of Diabetes ({probability*100:.2f}%)")
-    st.write("⚠️ Consult doctor, maintain diet, exercise regularly.")
-elif probability > 0.4:
-    st.warning(f"🟠 Moderate Risk ({probability*100:.2f}%)")
-    st.write("⚠️ Monitor health and schedule checkups.")
-else:
-    st.success(f"🟢 Low Risk ({(1-probability)*100:.2f}%)")
-    st.write("✅ Maintain healthy lifestyle.")
-
-fig, ax = plt.subplots()
-ax.bar(["Risk %"], [probability*100])
-ax.set_ylabel("Percentage")
-ax.set_title("Diabetes Risk Level")
-st.pyplot(fig)
-
-st.write("---")
-st.caption("This project is for educational purposes only and not a medical diagnosis tool.")
-
-
-
+st.caption("For educational purposes only.")
