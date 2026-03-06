@@ -16,7 +16,7 @@ accuracy = joblib.load("accuracy.pkl")
 st.info(f"Model Accuracy: {accuracy*100:.2f}%")
 
 preg = st.number_input("Pregnancies", 0, 20, 1)
-glucose = st.number_input("Glucose", 0, 200, 120)
+glucose = st.number_input("Glucose", 0, 500, 120)
 bp = st.number_input("Blood Pressure", 0, 150, 70)
 skin = st.number_input("Skin Thickness", 0, 100, 20)
 insulin = st.number_input("Insulin", 0, 900, 80)
@@ -43,3 +43,4 @@ if st.button("Predict Disease Risk"):
     st.pyplot(fig)
 
 st.caption("For educational purposes only.")
+
